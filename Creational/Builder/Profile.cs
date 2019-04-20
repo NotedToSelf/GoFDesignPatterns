@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Write;
 
 namespace Builder
 {
@@ -20,10 +21,20 @@ namespace Builder
         {
             if (!LoadProfile("BlankProfile.txt"))
             {
-                //generate new blank profile with correct dimensions
-                throw new Exception();
+                //TODO: generate new blank profile with correct dimensions
+                throw new FileNotFoundException();
             }
         }
+
+        public Profile(string filename)
+        {
+            if(!LoadProfile(filename))
+            {
+                throw new FileNotFoundException();
+            }
+            
+        }
+
         /// <summary>
         /// Prints the current profile to the console
         /// </summary>
@@ -34,10 +45,13 @@ namespace Builder
             {
                 throw new Exception();
             }
-
             Console.Write(fullProfile);
         }
 
+        public void PrintProfile(p)
+        {
+
+        }
         /// <summary>
         /// Takes the list of Elements and renders 
         /// </summary>

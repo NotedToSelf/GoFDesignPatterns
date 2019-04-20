@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Print.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="ProfileBuilder.cs" />

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using Write;
 // Erik Bogeberg
 // Design Patterns Implementation
 // https://github.com/NotedToSelf/GoFDesignPatterns
@@ -13,42 +15,76 @@ namespace Builder
     {
         static void Main(string[] args)
         {
+            Write.Print o = new Print();
+
             try
             {
+                Profile p = new Profile();
+
                 Welcome();
 
-                Profile p = new Profile();
-                p.PrintProfile();
+                /*while(true)
+                {
+                    o.Test();
+                }*/
+                while (true)
+                {
+                    Menu();
+
+                    p.PrintProfile();
+
+                    o.Wait();
+                    Exit();
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Input file does not exist.");
+                Console.WriteLine(ex.Message);
                 Exit();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fatal Unhandled Exception occurred. " + ex.Message);
+                Console.WriteLine("Fatal Unhandled Exception occurred.");
+                Console.WriteLine(ex.Message);
                 Exit();
             }
 
         }
-
 
 
         //Display Opening Message
         private static void Welcome()
         {
-            Console.WriteLine("\n\tProfile Builder\n");
+            Center("Profile Builder");
         }
 
         //Display Exiting Message
         private static void Exit()
         {
-            Console.WriteLine("\n\tPress any key to exit ... ");
+            Center("Press any key to exit ... ");
             Console.ReadKey();
         }
 
         //Display Main Menu Prompt
         private static int Menu()
         {
+            Center("o p t i o n s");
+            Wait();
             return 0;
-            Console.WriteLine();
+
+        }
+
+        //Aligns a message to the center of the console
+        private static void Center(string message)
+        {
+            Console.SetCursorPosition((Console.WindowWidth - message.Length) / 2, Console.CursorTop);
+            Console.WriteLine(message);
+        }
+
+        public static void Wait()
+        {
+            Console.ReadKey();
         }
     }
 }
