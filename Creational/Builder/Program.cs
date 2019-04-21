@@ -13,28 +13,22 @@ namespace Builder
 {
     class Program
     {
+        public static Print o = new Print();
+
         static void Main(string[] args)
         {
-            Write.Print o = new Print();
-
             try
             {
                 Profile p = new Profile();
 
                 Welcome();
-
-                /*while(true)
-                {
-                    o.Test();
-                }*/
+                int position = 1;
                 while (true)
                 {
-                    Menu();
-
-                    p.PrintProfile();
-
-                    o.Wait();
-                    Exit();
+                    p.PrintProfileCentered();
+                    position = Menu(position);
+                    
+                    //Exit();
                 }
             }
             catch (FileNotFoundException ex)
@@ -56,30 +50,63 @@ namespace Builder
         //Display Opening Message
         private static void Welcome()
         {
-            Center("Profile Builder");
+            Write.Print o = new Print();
+            o.Center("Add Element", false);
         }
 
         //Display Exiting Message
         private static void Exit()
         {
-            Center("Press any key to exit ... ");
+            o.Center("Press any key to exit ... ", false);
             Console.ReadKey();
         }
 
         //Display Main Menu Prompt
-        private static int Menu()
+        private static int Menu(int position)
         {
-            Center("o p t i o n s");
-            Wait();
-            return 0;
+            o.Line();
+            o.Line();
+            switch(position)
+            {
+                case 1:
+                    o.Left("Add Element", true);
+                    o.Center("Remove Element", false);
+                    o.Right("Save Profile", false);
+                    break;
+                case 2:
+                    o.Left("Add Element", false);
+                    o.Center("Remove Element", true);
+                    o.Right("Save Profile", false);
+                    break;
+                case 3:
+                    o.Left("Add Element", false);
+                    o.Center("Remove Element", false);
+                    o.Right("Save Profile", true);
+                    break;
 
-        }
+            }    
+            
+            o.Line();
+            ConsoleKeyInfo input = o.Wait();
+            switch(input.Key)
+            {
+                case (ConsoleKey.RightArrow):
+                    if (position < 3)
+                    {
+                        ++position;
+                    }
+                    break;
+                case ConsoleKey.LeftArrow:
+                    if (position > 1)
+                    {
+                        --position;
+                    }
+                    break;
+            }
 
-        //Aligns a message to the center of the console
-        private static void Center(string message)
-        {
-            Console.SetCursorPosition((Console.WindowWidth - message.Length) / 2, Console.CursorTop);
-            Console.WriteLine(message);
+            o.Clear();
+            return position;
+
         }
 
         public static void Wait()

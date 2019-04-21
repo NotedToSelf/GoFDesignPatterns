@@ -8,6 +8,7 @@ namespace Builder
 {
     class Profile
     {
+        private static Print o = new Print();
         private const int width = 100;
         private const int height = 200;
         private string fullProfile;
@@ -48,9 +49,20 @@ namespace Builder
             Console.Write(fullProfile);
         }
 
-        public void PrintProfile(p)
-        {
 
+        public void PrintProfileCentered()
+        {
+            // Profile should never be empty or null
+            if (fullProfile == null || fullProfile == String.Empty)
+            {
+                throw new Exception();
+            }
+            var lines = fullProfile.Split('\n');
+            foreach (string line in lines)
+            {
+                o.Center(line, false);
+                o.Line();
+            }
         }
         /// <summary>
         /// Takes the list of Elements and renders 
