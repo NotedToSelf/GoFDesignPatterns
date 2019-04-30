@@ -63,9 +63,12 @@ namespace Write
             }
         }
 
-        public void Line()
+        public void Line(int num = 1)
         {
-            Console.WriteLine();
+            for(int i = 0; i < num; ++i)
+            {
+                Console.WriteLine();
+            }
         }
 
         public void Clear()

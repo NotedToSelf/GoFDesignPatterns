@@ -153,9 +153,19 @@ namespace Builder
                         switch (position)
                         {
                             case 1:
+                                AddPicture();
+                                selected = true;
+                                break;
                             case 2:
+                                AddParagraph();
+                                selected = true;
+                                break;
                             case 3:
+                                AddTitle();
+                                selected = true;
+                                break;
                             case 4:
+                                AddLineBreak();
                                 selected = true;
                                 break;
                         }
@@ -164,6 +174,38 @@ namespace Builder
             }
 
             return true;
+        }
+
+        public void AddPicture()
+        { 
+            o.Clear();
+            PrintProfileCentered();
+            o.Line(2);
+        }
+
+        public void AddParagraph()
+        {
+            o.Clear();
+            PrintProfileCentered();
+            o.Line(2);
+            o.Center("Enter Paragraph Text followed by Enter Key:", false);
+            o.Line();
+            string input = Console.ReadLine();
+
+        }
+
+        public void AddTitle()
+        {
+            o.Clear();
+            PrintProfileCentered();
+            o.Line(2);
+        }
+
+        public void AddLineBreak()
+        {
+            o.Clear();
+            PrintProfileCentered();
+            o.Line(2);
         }
 
         public void RemoveElement()
