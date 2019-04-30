@@ -37,7 +37,7 @@ namespace Singleton
             return Console.ReadKey(true);
         }
 
-        public void SetSelected()
+        public void SetColorSelected()
         {
             Console.ForegroundColor = selected;
         }
@@ -45,6 +45,11 @@ namespace Singleton
         public void SetColorBasic()
         {
             Console.ForegroundColor = basic;
+        }
+
+        public void SetCursorCenter()
+        {
+            Console.SetCursorPosition((Console.WindowWidth) / 2, Console.CursorTop);
         }
 
         /// <summary>
