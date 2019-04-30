@@ -20,32 +20,36 @@ namespace Builder
             try
             {
                 Profile p = new Profile();
-
+                bool running = true;
                 Welcome();
                 int position = 1;
-                while (true)
+                while (running)
                 {
                     p.PrintProfileCentered();
-                    position = Menu(position);
-                    
-                    //Exit();
+                    position = Menu(position, ref p, ref running);
                 }
+                Exit();
             }
             catch (FileNotFoundException ex)
             {
-                Console.WriteLine("Input file does not exist.");
-                Console.WriteLine(ex.Message);
+                o.Line();
+                o.Center("Input file does not exist.", false);
+                o.Line();
+                o.Center(ex.Message, false);
+                o.Line();
                 Exit();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fatal Unhandled Exception occurred.");
-                Console.WriteLine(ex.Message);
+                o.Line();
+                o.Center("Fatal Unhandled Exception occurred.", false);
+                o.Line();
+                o.Center(ex.Message, false);
+                o.Line();
                 Exit();
             }
 
         }
-
 
         //Display Opening Message
         private static void Welcome()
@@ -62,7 +66,7 @@ namespace Builder
         }
 
         //Display Main Menu Prompt
-        private static int Menu(int position)
+        private static int Menu(int position, ref Profile p, ref bool running)
         {
             o.Line();
             o.Line();
@@ -72,18 +76,30 @@ namespace Builder
                     o.Left("Add Element", true);
                     o.Center("Remove Element", false);
                     o.Right("Save Profile", false);
+                    Console.WriteLine("\n");
+                    o.Center("Exit", false);
                     break;
                 case 2:
                     o.Left("Add Element", false);
                     o.Center("Remove Element", true);
                     o.Right("Save Profile", false);
+                    Console.WriteLine("\n");
+                    o.Center("Exit", false);
                     break;
                 case 3:
                     o.Left("Add Element", false);
                     o.Center("Remove Element", false);
                     o.Right("Save Profile", true);
+                    Console.WriteLine("\n");
+                    o.Center("Exit", false);
                     break;
-
+                case 4:
+                    o.Left("Add Element", false);
+                    o.Center("Remove Element", false);
+                    o.Right("Save Profile", false);
+                    Console.WriteLine("\n");
+                    o.Center("Exit", true);
+                    break;
             }    
             
             o.Line();
@@ -91,7 +107,7 @@ namespace Builder
             switch(input.Key)
             {
                 case (ConsoleKey.RightArrow):
-                    if (position < 3)
+                    if (position < 4)
                     {
                         ++position;
                     }
@@ -100,6 +116,23 @@ namespace Builder
                     if (position > 1)
                     {
                         --position;
+                    }
+                    break;
+                case ConsoleKey.Enter:
+                    switch(position)
+                    {
+                        case 1:
+                            p.AddElement();
+                            break;
+                        case 2:
+                            p.RemoveElement();
+                            break;
+                        case 3:
+                            p.SaveProfile();
+                            break;
+                        case 4:
+                            running = false;
+                            break;
                     }
                     break;
             }

@@ -6,8 +6,6 @@ namespace Builder
 {
     abstract class Element
     {
-
-
     }
 
     class Paragraph : Element

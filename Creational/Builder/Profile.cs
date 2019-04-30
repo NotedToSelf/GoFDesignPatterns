@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using Write;
 
@@ -22,7 +21,6 @@ namespace Builder
         {
             if (!LoadProfile("BlankProfile.txt"))
             {
-                //TODO: generate new blank profile with correct dimensions
                 throw new FileNotFoundException();
             }
         }
@@ -89,9 +87,93 @@ namespace Builder
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        public bool AddElement()
+        {
+            bool selected = false;
+            int position = 1;
+            
+            while (!selected)
+            {
+                o.Clear();
+                PrintProfileCentered();
 
+                Console.WriteLine("\n");
+                o.Center("Choose Element Type", false);
+                Console.WriteLine("\n\n");
+
+                switch (position)
+                { 
+                    case 1:
+                        o.Left("Picture", true);
+                        o.Center("Paragraph", false);
+                        o.Right("Title", false);
+                        Console.WriteLine("\n");
+                        o.Center("Line Break", false);
+                        break;
+                    case 2:
+                        o.Left("Picture", false);
+                        o.Center("Paragraph", true);
+                        o.Right("Title", false);
+                        Console.WriteLine("\n");
+                        o.Center("Line Break", false);
+                        break;
+                    case 3:
+                        o.Left("Picture", false);
+                        o.Center("Paragraph", false);
+                        o.Right("Title", true);
+                        Console.WriteLine("\n");
+                        o.Center("Line Break", false);
+                        break;
+                    case 4:
+                        o.Left("Picture", false);
+                        o.Center("Paragraph", false);
+                        o.Right("Title", false);
+                        Console.WriteLine("\n");
+                        o.Center("Line Break", true);
+                        break;
+                }
+
+                o.Line();
+                ConsoleKeyInfo input = o.Wait();
+                switch (input.Key)
+                {
+                    case (ConsoleKey.RightArrow):
+                        if (position < 4)
+                        {
+                            ++position;
+                        }
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if (position > 1)
+                        {
+                            --position;
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (position)
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                selected = true;
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            return true;
+        }
+
+        public void RemoveElement()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SaveProfile()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
