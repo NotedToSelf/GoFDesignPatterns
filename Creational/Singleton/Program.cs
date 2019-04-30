@@ -6,7 +6,11 @@ namespace Singleton
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Print p = Print.Instance();
+
+            p.Line(5);
+            p.Center("Testing");
+            p.Wait();
         }
     }
 }
