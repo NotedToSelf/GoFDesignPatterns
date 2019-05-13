@@ -27,10 +27,7 @@ namespace Singleton
             return _instance;
         }
 
-        protected Print()
-        {
-
-        }
+        protected Print(){}
 
         public ConsoleKeyInfo Wait()
         {
