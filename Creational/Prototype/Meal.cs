@@ -7,21 +7,20 @@ namespace Prototype
 
     public enum Drink
     {
-        Coke,
-        Pepsi,
-        Sprite,
+        Soda,
         IcedTea,
         Coffee,
-        MtnDew,
-        MilkShake
+        MilkShake,
+        None
     }
 
     public enum Side
     {
         Fries,
-        Salad,
+        SideSalad,
         OnionRings,
         TaterTots,
+        None
     }
 
     /// <summary>
@@ -29,39 +28,106 @@ namespace Prototype
     /// </summary>
     abstract class Meal
     {
-        private string name;
-        private Drink[] drinks;
-        private Side[] sides;
-        private float total; //Adjusted by certain sides or drinks
+        protected string name;
+        protected string entree;
+        protected List<Drink> drinks;
+        protected List<Side> sides;
+        protected float total;
 
-        public abstract void Clone();
+        public Meal()
+        {
+            sides = new List<Side>();
+            drinks = new List<Drink>();
+        }
+
+        public abstract Meal Clone();
     }
 
     class Burger : Meal
     {
+        private enum Cheese
+        {
+            Cheddar,
+            PepperJack,
+            Swiss,
+            Bleu,
+            None
+        }
+        private Cheese cheese;
+
         Burger()
         {
-
+            name = "Burger Combo";
+            cheese = Cheese.Cheddar;
+            sides.Add(Side.Fries);
+            drinks.Add(Drink.Soda);
         }
 
-        public override void Clone()
+        public override Meal Clone()
+        {
+            return new Burger();
+        }
+
+        public void Display()
         {
 
         }
 
     }
 
-    class Salad : Meal
+    class BBQSalad : Meal
     {
-        Salad ()
+        private enum Dressing
         {
-
+            BBQ,
+            Ceasar,
+            Ranch,
+        }
+        
+        private enum AddOns
+        {
+            Chicken = 2,
+            Steak = 3,
+            Bacon = 2,
+            Avocado = 2,
+            None = 0
         }
 
-        public override void Clone()
-        {
+        private Dressing dressing;
+        private AddOns addOns;
 
+        BBQSalad()
+        {
+            name = "Barbeque Salad Combo";
+            
+            dressing = Dressing.BBQ;
+            addOns = AddOns.None;
+            
+            drinks.Add(Drink.IcedTea);
+            sides.Add(Side.None);
+        }
+
+        public override Meal Clone()
+        {
+            return new BBQSalad();
         }
     }
 
+
+
+    class Custom : Meal
+    {
+        Custom()
+        {
+            name = "Create Your Own Combo";
+            entree = "None";
+            sides.Add(Side.None);
+            drinks.Add(Drink.None);
+        }
+
+        public override Meal Clone()
+        {
+            return new Custom();
+        }
+    }
 }

@@ -13,6 +13,10 @@ namespace Prototype
         static void Main(string[] args)
         {
             List<Meal> myOrder = new List<Meal>();
+            List<Meal> Menu = new List<Meal>();
+
+            Console.ReadKey();
         }
     }
+
 }
