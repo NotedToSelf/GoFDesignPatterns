@@ -4,23 +4,28 @@ using System.Text;
 
 namespace Prototype
 {
-
+    /// <summary>
+    /// List of possible drinks
+    /// </summary>
     public enum Drink
     {
-        Soda,
-        IcedTea,
-        Coffee,
-        MilkShake,
-        None
+        Soda = 0,
+        IcedTea = 1,
+        Coffee = 2,
+        MilkShake = 3,
+        None = 4
     }
 
+    /// <summary>
+    /// List of possible sides
+    /// </summary>
     public enum Side
     {
-        Fries,
-        SideSalad,
-        OnionRings,
-        TaterTots,
-        None
+        Fries = 0,
+        SideSalad = 1,
+        OnionRings = 2,
+        TaterTots = 3,
+        None = 4
     }
 
     /// <summary>
@@ -41,11 +46,22 @@ namespace Prototype
         }
 
         public abstract Meal Clone();
+        public abstract void Display();
+        public void DisplayBasic()
+        {
+            Console.Write("\tDrinks: ");
+            foreach (Drink d in drinks)
+                Console.Write(d.ToString() + "  ");
+            Console.Write("\n\tSides: ");
+            foreach (Side s in sides)
+                Console.Write(s.ToString() + "  ");
+            Console.WriteLine();
+        }
     }
 
     class Burger : Meal
     {
-        private enum Cheese
+        public enum Cheese
         {
             Cheddar,
             PepperJack,
@@ -55,9 +71,10 @@ namespace Prototype
         }
         private Cheese cheese;
 
-        Burger()
+        public Burger()
         {
             name = "Burger Combo";
+            entree = "Cheeseburger";
             cheese = Cheese.Cheddar;
             sides.Add(Side.Fries);
             drinks.Add(Drink.Soda);
@@ -68,40 +85,50 @@ namespace Prototype
             return new Burger();
         }
 
-        public void Display()
+        /// <summary>
+        /// Prints the Burger Meal to the console
+        /// </summary>
+        public override void Display()
         {
-
+            Console.WriteLine("\t" + name);
+            Console.WriteLine("\t" + cheese.ToString() + " " + entree);
+            DisplayBasic();
         }
 
     }
 
     class BBQSalad : Meal
     {
-        private enum Dressing
+        public enum Dressing
         {
-            BBQ,
-            Ceasar,
-            Ranch,
+            BBQ = 0,
+            Ceasar = 1,
+            Ranch = 2,
         }
         
-        private enum AddOns
+        public enum AddOns
         {
-            Chicken = 2,
-            Steak = 3,
+            Chicken = 0,
+            Steak = 1,
             Bacon = 2,
-            Avocado = 2,
-            None = 0
+            Avocado = 3,
+            None = 4
         }
 
         private Dressing dressing;
-        private AddOns addOns;
+        private List<AddOns> addOns;
 
-        BBQSalad()
+        public BBQSalad()
         {
             name = "Barbeque Salad Combo";
-            
+            entree = "BBQ Salad";
             dressing = Dressing.BBQ;
-            addOns = AddOns.None;
+            addOns = new List<AddOns>();
+            addOns.Add(AddOns.None);
+            
+            //Delete these
+            NewAddOn(AddOns.Chicken);
+            NewAddOn(AddOns.Avocado);
             
             drinks.Add(Drink.IcedTea);
             sides.Add(Side.None);
@@ -111,13 +138,35 @@ namespace Prototype
         {
             return new BBQSalad();
         }
+
+        /// <summary>
+        /// Adds an extra add on to the order
+        /// </summary>
+        public void NewAddOn(AddOns toAdd)
+        {
+            if(addOns.Contains(AddOns.None))
+                addOns.Remove(AddOns.None);
+
+            addOns.Add(toAdd);
+        }
+
+        public override void Display()
+        {
+            Console.WriteLine("\t" + name);
+            Console.WriteLine("\t" + entree + " with " + dressing.ToString() + " dressing");
+            Console.Write("\tAddOns: ");
+
+            foreach (AddOns addon in addOns)
+                Console.Write(addon + "  ");
+            
+            Console.WriteLine();
+            DisplayBasic();
+        }
     }
-
-
 
     class Custom : Meal
     {
-        Custom()
+        public Custom()
         {
             name = "Create Your Own Combo";
             entree = "None";
@@ -128,6 +177,11 @@ namespace Prototype
         public override Meal Clone()
         {
             return new Custom();
+        }
+
+        public override void Display()
+        {
+            DisplayBasic();
         }
     }
 }

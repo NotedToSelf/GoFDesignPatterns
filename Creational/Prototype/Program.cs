@@ -15,6 +15,21 @@ namespace Prototype
             List<Meal> myOrder = new List<Meal>();
             List<Meal> Menu = new List<Meal>();
 
+            Menu.Add(new Burger());
+            Menu.Add(new BBQSalad());
+            Menu.Add(new Custom());
+            
+            Console.WriteLine();
+            
+            int i = 1;
+            foreach (Meal item in Menu)
+            {
+                Console.WriteLine(i + ".");
+                item.Display();
+                Console.WriteLine();
+                ++i;
+            }
+
             Console.ReadKey();
         }
     }
