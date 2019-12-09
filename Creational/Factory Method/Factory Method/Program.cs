@@ -40,7 +40,7 @@ namespace FactoryMethod
 
     class ConcreteProductB : Product
 
-    {
+    { 
     }
 
     abstract class Creator
