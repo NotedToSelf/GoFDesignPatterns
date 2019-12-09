@@ -1,111 +1,122 @@
 ﻿using System;
- 
-namespace DoFactory.GangOfFour.Abstract.Structural
+
+namespace AbstractFactory
 {
-  class MainApp
-  {
+    class Program
+    {
 
-    public static void Main()
-    {
-      // Abstract factory #1
-      AbstractFactory factory1 = new ConcreteFactory1();
-      Client client1 = new Client(factory1);
-      client1.Run();
- 
-      // Abstract factory #2
-      AbstractFactory factory2 = new ConcreteFactory2();
-      Client client2 = new Client(factory2);
-      client2.Run();
- 
-      // Wait for user input
-      Console.ReadKey();
-    }
-  }
- 
-  abstract class AbstractFactory
+        public static void Main()
+        {
+            // Build for Andriod
+            AbstractFactory AndriodFactory = new AndriodBuild();
+            Client AndriodApp = new Client(AndriodFactory);
+            AndriodApp.Run();
 
-  {
-    public abstract AbstractProductA CreateProductA();
-    public abstract AbstractProductB CreateProductB();
-  }
- 
- 
-  class ConcreteFactory1 : AbstractFactory
+            Console.WriteLine();
+            
+            // Build for iPhone
+            AbstractFactory AppleFactory = new AppleBuild();
+            Client IphoneApp = new Client(AppleFactory);
+            IphoneApp.Run();
 
-  {
-    public override AbstractProductA CreateProductA()
-    {
-      return new ProductA1();
+            Console.ReadKey();
+        }
     }
-    public override AbstractProductB CreateProductB()
-    {
-      return new ProductB1();
-    }
-  }
- 
-  class ConcreteFactory2 : AbstractFactory
 
-  {
-    public override AbstractProductA CreateProductA()
+    // Abstract Factory class defining the components needed for each Concrete Factory
+    abstract class AbstractFactory
     {
-      return new ProductA2();
+        public abstract AbstractAssets BundleAssets();
+        public abstract AbstractApp BuildForPlatform();
     }
-    public override AbstractProductB CreateProductB()
+
+    // Defines the specific build operations for Andriod
+    class AndriodBuild : AbstractFactory
     {
-      return new ProductB2();
+
+        public override AbstractAssets BundleAssets()
+        {
+            Console.WriteLine("Bundling Andiod Assets");
+            return new AndriodAssets();
+        }
+
+        public override AbstractApp BuildForPlatform()
+        {
+            Console.WriteLine("Starting Andriod Build");
+            return new AndriodExecutable();
+        }
     }
-  }
- 
-  abstract class AbstractProductA
-  {
-  }
- 
-  abstract class AbstractProductB
-  {
-    public abstract void Interact(AbstractProductA a);
-  }
- 
- 
-  class ProductA1 : AbstractProductA
-  {
-  }
- 
-  class ProductB1 : AbstractProductB
-  {
-    public override void Interact(AbstractProductA a)
+
+    // Defines the specific build operations for Apple
+    class AppleBuild : AbstractFactory
     {
-      Console.WriteLine(this.GetType().Name +
-        " interacts with " + a.GetType().Name);
+        public override AbstractAssets BundleAssets()
+        {
+            Console.WriteLine("Bundling Apple Assets");
+            return new AppleAssets();
+        }
+        public override AbstractApp BuildForPlatform()
+        {
+            Console.WriteLine("Starting iPhone Build");
+            return new AppleExecutable();
+        }
     }
-  }
- 
-  class ProductA2 : AbstractProductA
-  {
-  }
- 
-  class ProductB2 : AbstractProductB
-  {
-    public override void Interact(AbstractProductA a)
+
+    // Defines abstract asset operations
+    abstract class AbstractAssets
     {
-      Console.WriteLine(this.GetType().Name +
-        " interacts with " + a.GetType().Name);
+        //abstract Assets requestAssets(); for example
     }
-  }
- 
-  class Client
-  {
-    private AbstractProductA _abstractProductA;
-    private AbstractProductB _abstractProductB;
- 
-    public Client(AbstractFactory factory)
+
+    // Defines abstract app operations
+    abstract class AbstractApp
     {
-      _abstractProductB = factory.CreateProductB();
-      _abstractProductA = factory.CreateProductA();
+        public abstract void BuildWithAssets(AbstractAssets a);
     }
- 
-    public void Run()
+
+    // Andriod implementation of asset operations
+    class AndriodAssets : AbstractAssets
     {
-      _abstractProductB.Interact(_abstractProductA);
     }
-  }
+
+    // Andriod implementation of app operations
+    class AndriodExecutable : AbstractApp
+    {
+        public override void BuildWithAssets(AbstractAssets a)
+        {
+            Console.WriteLine("Building Andriod app with assets: " + a.GetType().Name);
+        }
+    }
+
+    // Apple implementation of asset operations
+    class AppleAssets : AbstractAssets
+    {
+    }
+
+    // Apple implementation of build operations
+    class AppleExecutable : AbstractApp
+    {
+        public override void BuildWithAssets(AbstractAssets a)
+        {
+            Console.WriteLine("Building Apple app with assets: " + a.GetType().Name);
+        }
+    }
+
+    // Defines the generic build process for both apps
+    class Client
+    {
+        private AbstractAssets _abstractAssets;
+        private AbstractApp _abstractBuild;
+
+        public Client(AbstractFactory factory)
+        {
+            _abstractAssets = factory.BundleAssets();
+            _abstractBuild = factory.BuildForPlatform();
+        }
+
+        public void Run()
+        {
+            _abstractBuild.BuildWithAssets(_abstractAssets);
+        }
+    }
 }
