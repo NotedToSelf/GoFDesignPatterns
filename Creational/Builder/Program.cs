@@ -1,150 +1,117 @@
 ﻿using System;
-using System.IO;
-using Write;
-// Erik Bogeberg
-// Design Patterns Implementation
-// https://github.com/NotedToSelf/GoFDesignPatterns
+using System.Collections.Generic;
 
-// Implementation of Builder Design Pattern
-
-// Concept: Profile Builder for some sort of social media site
-
-namespace Builder
+namespace DoFactory.GangOfFour.Builder.Structural
 {
-    class Program
+    public class MainApp
+
     {
-        public static Print o = new Print();
-
-        static void Main(string[] args)
+        public static void Main()
         {
-            try
-            {
-                Profile p = new Profile();
-                bool running = true;
-                Welcome();
-                int position = 1;
-                while (running)
-                {
-                    p.PrintProfileCentered();
-                    position = Menu(position, ref p, ref running);
-                }
-                Exit();
-            }
-            catch (FileNotFoundException ex)
-            {
-                o.Line();
-                o.Center("Input file does not exist.", false);
-                o.Line();
-                o.Center(ex.Message, false);
-                o.Line();
-                Exit();
-            }
-            catch (Exception ex)
-            {
-                o.Line();
-                o.Center("Fatal Unhandled Exception occurred.", false);
-                o.Line();
-                o.Center(ex.Message, false);
-                o.Line();
-                Exit();
-            }
 
-        }
 
-        //Display Opening Message
-        private static void Welcome()
-        {
-            Write.Print o = new Print();
-            o.Center("Add Element", false);
-        }
+            Director director = new Director();
 
-        //Display Exiting Message
-        private static void Exit()
-        {
-            o.Center("Press any key to exit ... ", false);
-            Console.ReadKey();
-        }
+            Builder b1 = new ConcreteBuilder1();
+            Builder b2 = new ConcreteBuilder2();
 
-        //Display Main Menu Prompt
-        private static int Menu(int position, ref Profile p, ref bool running)
-        {
-            o.Line();
-            o.Line();
-            switch(position)
-            {
-                case 1:
-                    o.Left("Add Element", true);
-                    o.Center("Remove Element", false);
-                    o.Right("Save Profile", false);
-                    Console.WriteLine("\n");
-                    o.Center("Exit", false);
-                    break;
-                case 2:
-                    o.Left("Add Element", false);
-                    o.Center("Remove Element", true);
-                    o.Right("Save Profile", false);
-                    Console.WriteLine("\n");
-                    o.Center("Exit", false);
-                    break;
-                case 3:
-                    o.Left("Add Element", false);
-                    o.Center("Remove Element", false);
-                    o.Right("Save Profile", true);
-                    Console.WriteLine("\n");
-                    o.Center("Exit", false);
-                    break;
-                case 4:
-                    o.Left("Add Element", false);
-                    o.Center("Remove Element", false);
-                    o.Right("Save Profile", false);
-                    Console.WriteLine("\n");
-                    o.Center("Exit", true);
-                    break;
-            }    
-            
-            o.Line();
-            ConsoleKeyInfo input = o.Wait();
-            switch(input.Key)
-            {
-                case (ConsoleKey.RightArrow):
-                    if (position < 4)
-                    {
-                        ++position;
-                    }
-                    break;
-                case ConsoleKey.LeftArrow:
-                    if (position > 1)
-                    {
-                        --position;
-                    }
-                    break;
-                case ConsoleKey.Enter:
-                    switch(position)
-                    {
-                        case 1:
-                            p.AddElement();
-                            break;
-                        case 2:
-                            p.RemoveElement();
-                            break;
-                        case 3:
-                            p.SaveProfile();
-                            break;
-                        case 4:
-                            running = false;
-                            break;
-                    }
-                    break;
-            }
+            // Construct two products
 
-            o.Clear();
-            return position;
+            director.Construct(b1);
+            Product p1 = b1.GetResult();
+            p1.Show();
 
-        }
+            director.Construct(b2);
+            Product p2 = b2.GetResult();
+            p2.Show();
 
-        public static void Wait()
-        {
+            // Wait for user
+
             Console.ReadKey();
         }
     }
+
+    class Director
+
+    {
+        // Builder uses a complex series of steps
+
+        public void Construct(Builder builder)
+        {
+            builder.BuildPartA();
+            builder.BuildPartB();
+        }
+    }
+
+    abstract class Builder
+
+    {
+        public abstract void BuildPartA();
+        public abstract void BuildPartB();
+        public abstract Product GetResult();
+    }
+
+    class ConcreteBuilder1 : Builder
+
+    {
+        private Product _product = new Product();
+
+        public override void BuildPartA()
+        {
+            _product.Add("PartA");
+        }
+
+        public override void BuildPartB()
+        {
+            _product.Add("PartB");
+        }
+
+        public override Product GetResult()
+        {
+            return _product;
+        }
+    }
+
+    class ConcreteBuilder2 : Builder
+
+    {
+        private Product _product = new Product();
+
+        public override void BuildPartA()
+        {
+            _product.Add("PartX");
+        }
+
+        public override void BuildPartB()
+        {
+            _product.Add("PartY");
+        }
+
+        public override Product GetResult()
+        {
+            return _product;
+        }
+    }
+
+    
+    class Product
+
+    {
+        private List<string> _parts = new List<string>();
+
+        public void Add(string part)
+        {
+            _parts.Add(part);
+        }
+
+        public void Show()
+        {
+            Console.WriteLine("\nProduct Parts -------");
+            foreach (string part in _parts)
+                Console.WriteLine(part);
+        }
+    }
 }
+
+
+
