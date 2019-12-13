@@ -4,7 +4,6 @@ namespace Facade
 {
 
     class MainApp
-
     {
 
         public static void Main()
@@ -14,14 +13,11 @@ namespace Facade
             facade.MethodA();
             facade.MethodB();
 
-            // Wait for user
-
             Console.ReadKey();
         }
     }
 
     class SubSystemOne
-
     {
         public void MethodOne()
         {
@@ -30,7 +26,6 @@ namespace Facade
     }
 
     class SubSystemTwo
-
     {
         public void MethodTwo()
         {
@@ -39,7 +34,6 @@ namespace Facade
     }
 
     class SubSystemThree
-
     {
         public void MethodThree()
         {
@@ -48,7 +42,6 @@ namespace Facade
     }
 
     class SubSystemFour
-
     {
         public void MethodFour()
         {
@@ -57,13 +50,13 @@ namespace Facade
     }
 
     class Facade
-
     {
         private SubSystemOne _one;
         private SubSystemTwo _two;
         private SubSystemThree _three;
         private SubSystemFour _four;
 
+        // Facade contains all the relevant subsystems and can abstract their functionality as needed
         public Facade()
         {
             _one = new SubSystemOne();

@@ -3,44 +3,31 @@
 namespace Memento
 {
     class MainApp
-
     {
         static void Main()
         {
             Originator o = new Originator();
-            o.State = "On";
-
-            // Store internal state
+            o.State = "State 1";
 
             Caretaker c = new Caretaker();
             c.Memento = o.CreateMemento();
 
-            // Continue changing originator
-
-            o.State = "Off";
-
-            // Restore saved state
-
+            o.State = "State 2";
             o.SetMemento(c.Memento);
-
-            // Wait for user
 
             Console.ReadKey();
         }
     }
 
     class Originator
-
     {
         private string _state;
 
         // Property
-
         public string State
         {
             get { return _state; }
             set
-
             {
                 _state = value;
                 Console.WriteLine("State = " + _state);
